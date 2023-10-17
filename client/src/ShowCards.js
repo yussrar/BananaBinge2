@@ -17,7 +17,7 @@ function Cards() {
   useEffect(() => {
     async function fetchUserWishList() {
       try {
-        const response = await axios.get(`http://localhost:3000/api/wishlist?userId=${user._id}`);
+        const response = await axios.get(`https://banana-binge2.vercel.app/api/wishlist?userId=${user._id}`);
         const data = response.data;
         setUserWishList(data);
       } catch (error) {
@@ -101,7 +101,7 @@ function Cards() {
 
       console.log(data);
 
-      const response = await axios.post('http://localhost:3000/api/addToWishlist', data);
+      const response = await axios.post('https://banana-binge2.vercel.app/api/addToWishlist', data);
       const responseData = response.data;
       setUserWishList([...userWishList, { tvShowId }]);
 

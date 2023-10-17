@@ -13,6 +13,10 @@ function Lists() {
   const { user } = useUser();
   const [userWishList, setUserWishList] = useState([]); // Define userWishList as a state variable
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+  
 
   const isAlreadyAdded = (tvShowId) => {
     return userWishList.some((item) => item.tvShowId === tvShowId);
@@ -75,7 +79,7 @@ function Lists() {
         UserId: UserId,
       };
 
-      const response = await axios.post('http://localhost:3000/api/addToWishlist', data);
+      const response = await axios.post('https://banana-binge2.vercel.app/api/addToWishlist', data);
       const responseData = response.data;
       setAddToWishlistMessage(responseData.message);
       setUserWishList([...userWishList, { tvShowId }]);
@@ -95,7 +99,7 @@ function Lists() {
   useEffect(() => {
     async function fetchUserWishList() {
       try {
-        const response = await axios.get(`http://localhost:3000/api/wishlist?userId=${user._id}`);
+        const response = await axios.get(`https://banana-binge2.vercel.app/api/wishlist?userId=${user._id}`);
         const data = response.data;
         setUserWishList(data); // Set userWishList with the fetched data
       } catch (error) {

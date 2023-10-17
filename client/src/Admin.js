@@ -27,7 +27,7 @@ function AdminPanel()  {
     // Fetch a list of users from your server when the component mounts
     async function fetchUsers() {
       try {
-        const response = await axios.get('http://localhost:3000/api/users'); // Replace with your server route
+        const response = await axios.get('https://banana-binge2.vercel.app/api/users'); // Replace with your server route
         const data = response.data;
         setUsers(data);
       } catch (error) {
@@ -44,7 +44,7 @@ function AdminPanel()  {
     try {
       console.log("user deletion requested")
       // Send a request to your server to delete the selected user
-      const response = await axios.delete(`http://localhost:3000/api/deleteUser/${userId}`); // Replace with your server route
+      const response = await axios.delete(`https://banana-binge2.vercel.app/api/deleteUser/${userId}`); // Replace with your server route
       // Update the users list to reflect the deleted user
       console.log(response.data.message);
       setUsers(users.filter((user) => user._id !== userId));

@@ -7,9 +7,6 @@ function Footer() {
       <div className="copyright">
         Developed by Yusra
       </div>
-      <div className="contact">
-        <button>Contact</button>
-      </div>
     </footer>
   );
 }

@@ -13,9 +13,6 @@ function Lists() {
   const { user } = useUser();
   const [userWishList, setUserWishList] = useState([]); // Define userWishList as a state variable
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-
   
 
   const isAlreadyAdded = (tvShowId) => {

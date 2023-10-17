@@ -306,12 +306,16 @@ app.post('/api/removeFromWishlist', async (req, res) => {
     // Access the wish list collection
     const wishListCollection = db.collection('wishLists');
     
+    // Convert the userId and tvShowId to ObjectId
+    const userIdObject = new ObjectId(userId);
+    const tvShowIdObject = new ObjectId(tvShowId);
+
     // Remove the TV show from the wish list
-    const result = await wishListCollection.deleteOne({ userId, tvShowId });
+    const result = await wishListCollection.deleteOne({ userId: userIdObject, tvShowId: tvShowIdObject });
 
     client.close();
 
-    if (result) {
+    if (result.deletedCount > 0) {
       res.status(200).json({ message: 'TV show removed from wish list' });
     } else {
       res.status(404).json({ message: 'TV show not found in wish list' });
@@ -321,6 +325,7 @@ app.post('/api/removeFromWishlist', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 //Admin Panel
 app.get('/api/users', async (req, res) => {

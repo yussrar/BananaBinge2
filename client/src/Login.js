@@ -43,7 +43,7 @@ const Login = () => {
           const user = data.user;
           setUser(user);
           // Navigate to the Home component and send user data as state
-          navigate('/Home');
+          navigate('/');
 
         } else {
           setErrorMessage('Login failed');

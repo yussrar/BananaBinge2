@@ -243,6 +243,7 @@ app.post('/api/showDetails', async (req, res) => {
   try {
     const { tvShowId, tvShowName } = req.body;
 
+    console.log( "server" + tvShowId)
 
     // Send a request to the Movie DB API using the tvShowId
     const movieDBApiUrl = `https://api.themoviedb.org/3/tv/${tvShowId}`;
@@ -256,6 +257,8 @@ app.post('/api/showDetails', async (req, res) => {
     const youtubeResponse = await fetch(youtubeApiUrl, options);
     const youtubeData = await youtubeResponse.json();
 
+    console.log(movieDBData);
+    console.log(youtubeData);
     //sending response from both API
     res.json({
       movieDB: movieDBData,

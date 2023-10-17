@@ -18,9 +18,9 @@ function App() {
         <div>
           <Header />
           <Routes>
-            <Route path="/Home" element={<div> <Search /> <Genre /> <ShowCards /> </div>} />
+            <Route path="/" element={<div> <Search /> <Genre /> <ShowCards /> </div>} />
             <Route path="/Lists" element={<Lists />} />
-            <Route path="/Detsails" element={<Details />} />
+            <Route path="/Details" element={<Details />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/Register" element={<Register />} />
           </Routes>

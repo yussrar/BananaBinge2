@@ -18,6 +18,8 @@ function Cards() {
         tvShowName: tvShowName,
       };
 
+      console.log(data);
+
       const response = await axios.post('https://banana-binge2.vercel.app/api/showDetails', data);
       const responseData = response.data;
 

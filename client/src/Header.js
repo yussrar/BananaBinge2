@@ -41,7 +41,7 @@ const Header = () => {
       <div className="logo">Banana Binge</div>
       <nav className="nav">
       <ul>
-          <li><Link to="/Home">Home</Link></li>
+          <li><Link to="/">Home</Link></li>
           <li><Link to="/About">About</Link></li>
           {user ? (
         <li onClick={toggleDropdown} className="dropdown-toggle">

@@ -10,7 +10,7 @@ const Header = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/profile'); // Replace with your server route
+        const response = await fetch('https://banana-binge2.vercel.app/api/profile'); // Replace with your server route
         if (response.status === 200) {
           const data = await response.json();
           setUser(data.user); // Set the user in the context

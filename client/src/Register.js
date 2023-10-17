@@ -26,7 +26,7 @@ const Register = () => {
       setErrorMessage('Password should be less than 20 characters');
     } else {
       try {
-        const response = await fetch('http://localhost:3000/api/register', {
+        const response = await fetch('https://banana-binge2.vercel.app/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

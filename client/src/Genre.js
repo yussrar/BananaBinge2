@@ -12,7 +12,7 @@ function Genre() {
   //sending to server
   const handleGenreClick = async (genreId, genreName) => {
     try {
-      const response = await axios.post(`https://cap-project-server.vercel.app/api/selectedGenre/${genreId}`);
+      const response = await axios.post(`https://banana-binge2.vercel.app//api/selectedGenre/${genreId}`);
       const responseData = response.data;  
 
       navigate('/Lists', {
@@ -42,7 +42,7 @@ function Genre() {
     async function fetchGenres() {
       try {
 
-        const response = await axios.get('https://cap-project-server.vercel.app/api/genres'); // Assuming your server is running on the same domain
+        const response = await axios.get('https://banana-binge2.vercel.app/api/genres'); // Assuming your server is running on the same domain
         const data =response.data
         setGenres(data);
         

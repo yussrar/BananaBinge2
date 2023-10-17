@@ -11,7 +11,7 @@ function Search() {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`https://cap-project-server.vercel.app/api/searchTVShows?query=${searchQuery}`);
+      const response = await fetch(`https://banana-binge2.vercel.app/api/searchTVShows?query=${searchQuery}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

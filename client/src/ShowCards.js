@@ -18,7 +18,7 @@ function Cards() {
         tvShowName: tvShowName,
       };
 
-      const response = await axios.post('https://cap-project-server.vercel.app/api/showDetails', data);
+      const response = await axios.post('https://banana-binge2.vercel.app/api/showDetails', data);
       const responseData = response.data;
 
 
@@ -48,7 +48,7 @@ function Cards() {
   useEffect(() => {
     async function fetchTrendingTVShows() {
       try {
-        const response = await axios.get('https://cap-project-server.vercel.app/api/trendingTVShows');
+        const response = await axios.get('https://banana-binge2.vercel.app/api/trendingTVShows');
         const data = response.data;
         setTvShows(data);
       } catch (error) {

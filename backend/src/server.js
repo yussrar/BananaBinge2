@@ -29,11 +29,6 @@ const client = new MongoClient(uri, {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use(cors({
-  origin: 'http://localhost:3001', // Replace with your client's origin
-  credentials: true,
-}));
-
 
 //connecting to db trial
 async function connectToDatabase() {

@@ -5,6 +5,8 @@ import cors from "cors"
 import fetch from "node-fetch";
 import bcrypt from "bcryptjs"; 
 import session from "express-session";
+import { ObjectId } from "mongodb";
+
 
 
 const app = express();
@@ -139,29 +141,6 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-app.get('/api/profile', (req, res) => {
-  if (req.session.user) {
-    // User is authenticated, and you can access user data
-    const user = req.session.user;
-    console.log('User profile accessed:', user);
-    res.json({ message: 'Access granted', user });
-  } else {
-    res.status(401).json({ message: 'Access denied' });
-  }
-});
-
-
-//logout
-app.post('/api/logout', (req, res) => {
-  // Destroy the user's session to log them out
-  req.session.destroy((err) => {
-    if (err) {
-      res.status(500).json({ message: 'Error logging out' });
-    } else {
-      res.json({ message: 'Logout successful' });
-    }
-  });
-});
 
 //For getting the data from the movie db api
 const url = 'https://api.themoviedb.org/3/trending/tv/day';
@@ -270,6 +249,126 @@ app.post('/api/showDetails', async (req, res) => {
     res.status(500).json({ error: 'Error fetching TV shows or YouTube videos' });
   }
 });
+
+
+//Adding to wish lists
+app.post('/api/addToWishlist', async (req, res) => {
+  const data = req.body; // This will contain the TV show ID and User ID
+
+  try {
+    await client.connect();
+    const db = client.db('BananaBinge');
+    // Insert the TV show into the wish list collection
+    const wishListCollection = db.collection('wishLists');
+    const result = await wishListCollection.insertOne(data);
+    
+    client.close();
+    if (result) {
+      res.status(200).json({ message: 'Added' });
+    } else {
+      res.status(500).json({ message: 'Failed to add to wish list' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+//Fetching data for wishlists
+app.get('/api/wishlist', async (req, res) => {
+  const userId = "652c6418359da5a6950bf690";
+  console.log("UserID" +userId);
+  await client.connect();
+  const db = client.db('BananaBinge');
+  // Insert the TV show into the wish list collection
+
+  try {
+    const wishListCollection = db.collection('wishLists');
+    const wishListData = await wishListCollection.find({ UserId: userId }).toArray();
+    res.status(200).json(wishListData);
+    console.log(wishListData);
+  } catch (error) {
+    console.error('Error fetching wish list data:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Import required modules and set up your Express app
+
+// Endpoint to remove a TV show from a user's wish list
+app.post('/api/removeFromWishlist', async (req, res) => {
+  const { userId, tvShowId } = req.body;
+
+  try {
+    await client.connect();
+    const db = client.db('BananaBinge');
+    
+    // Access the wish list collection
+    const wishListCollection = db.collection('wishLists');
+    
+    // Remove the TV show from the wish list
+    const result = await wishListCollection.deleteOne({ userId, tvShowId });
+
+    client.close();
+
+    if (result) {
+      res.status(200).json({ message: 'TV show removed from wish list' });
+    } else {
+      res.status(404).json({ message: 'TV show not found in wish list' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+//Admin Panel
+app.get('/api/users', async (req, res) => {
+  try {
+    console.log("admin called users")
+    await client.connect();
+    const db = client.db('BananaBinge');
+    const usersCollection = db.collection('users');
+    const users = await usersCollection.find({}).toArray();
+
+    console.log(users);
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+  
+});
+
+
+app.delete('/api/deleteUser/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  console.log(userId)
+  try {
+    await client.connect();
+    const db = client.db('BananaBinge');
+    const userCollection = db.collection('users');
+
+    const userIdObject = new ObjectId(userId);
+    console.log(userIdObject);
+    // Delete the user by ID
+    const deletionResult = await userCollection.deleteOne({ _id: userIdObject });
+
+    console.log(deletionResult);
+    if (deletionResult.deletedCount === 0) {
+      
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    client.close();
+
+    res.status(200).json({ message: 'User deleted' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 
 // Start the Express server

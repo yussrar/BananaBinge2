@@ -42,8 +42,15 @@ const Login = () => {
           const data = await response.json();
           const user = data.user;
           setUser(user);
+          console.log(user.email);
+          //&& user.password === "$2b$10$.Z.qZRF0229ntAHlETAnnOaIdwSyQinhP56UqX0y018HVGvteyVf2")
           // Navigate to the Home component and send user data as state
-          navigate('/');
+          if (user.email === "yusra@admin.com"&& user.password === "$2a$10$FJqQYC2yCRr0f1d4hryfQeLBhlXx0NAERcm55B8LuI4XY74QbGVxm")   {
+            // Navigate to the admin component
+            navigate('/Admin');
+          } else {
+            // Navigate to the home component
+            navigate('/');}
 
         } else {
           setErrorMessage('Login failed');

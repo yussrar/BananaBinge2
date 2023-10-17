@@ -1,32 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './Header.css';
-import { useUser, setUser } from './UserProvider'; 
+import { useUser } from './UserProvider'; 
 import { Link } from 'react-router-dom';
+
 
 const Header = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { user } = useUser(); 
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('https://banana-binge2.vercel.app/api/profile'); // Replace with your server route
-        if (response.status === 200) {
-          const data = await response.json();
-          setUser(data.user); // Set the user in the context
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    if (!user) {
-      // If user data is not available, fetch it
-      fetchUserData();
-    }
-  }, [user]);
-
-
 
 
   const toggleDropdown = () => {
@@ -34,6 +14,9 @@ const Header = () => {
   };
 
   console.log('User in Header:', user);
+
+
+
 
   return (
 
@@ -48,9 +31,10 @@ const Header = () => {
           Hello, {user.name}
           {isDropdownOpen && (
             <ul className="dropdown-menu">
-              <li><Link to="http://localhost:3000/api/profile">My Profile</Link></li>
-              <li><Link to="/wishlist">Wish List</Link></li>
-              <li><Link to="/logout">Logout</Link></li>
+              <li><Link to="/Profile">My Profile</Link></li>
+              <li><Link to="/WishList">Wish List</Link></li>
+              <li><Link to="/Logout">Logout</Link></li>
+
             </ul>
           )}
         </li>

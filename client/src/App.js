@@ -10,6 +10,10 @@ import Lists from './Lists';
 import Details from './Details';
 import Register from './Register';
 import Login from './Login';
+import Logout from './Logout';
+import Admin from './Admin'
+import Wishlist from './WishList';
+import Profile from './Profile';
 
 function App() {
   return (
@@ -23,6 +27,10 @@ function App() {
             <Route path="/Details" element={<Details />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/Register" element={<Register />} />
+            <Route path="/Logout" element={<Logout />} />
+            <Route path="/WishList" element={<Wishlist />} />
+            <Route path="/Admin" element={<Admin />} />
+            <Route path="/Profile" element={<Profile />} />
           </Routes>
           <Footer />
         </div>

@@ -229,19 +229,19 @@ app.post('/api/showDetails', async (req, res) => {
     const movieDBResponse = await fetch(movieDBApiUrl, options);
     const movieDBData = await movieDBResponse.json();
 
-    // Send a request to YouTube using the tvShowName
-    // const apiKey2 = 'AIzaSyBbT9Z5Sjj4HykHFjYEWqY8rE-JjlOurmU'; // Replace with your YouTube API key
-    // const showTitle = encodeURIComponent(tvShowName);
-    // const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey2}&type=video&part=snippet&q=${showTitle} trailer&maxResults=3`;
-    // const youtubeResponse = await fetch(youtubeApiUrl, options);
-    // const youtubeData = await youtubeResponse.json();
+    //Send a request to YouTube using the tvShowName
+    const apiKey2 = 'AIzaSyBbT9Z5Sjj4HykHFjYEWqY8rE-JjlOurmU'; // Replace with your YouTube API key
+    const showTitle = encodeURIComponent(tvShowName);
+    const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey2}&type=video&part=snippet&q=${showTitle} trailer&maxResults=3`;
+    const youtubeResponse = await fetch(youtubeApiUrl, options);
+    const youtubeData = await youtubeResponse.json();
 
     console.log(movieDBData);
     console.log(youtubeData);
     //sending response from both API
     res.json({
       movieDB: movieDBData,
-      youtube: "youtubeData",
+      youtube: youtubeData,
     });
 
   } catch (error) {
@@ -276,7 +276,7 @@ app.post('/api/addToWishlist', async (req, res) => {
 
 //Fetching data for wishlists
 app.get('/api/wishlist', async (req, res) => {
-  const userId = "652c6418359da5a6950bf690";
+  const userId = req.query.userId; 
   console.log("UserID" +userId);
   await client.connect();
   const db = client.db('BananaBinge');
@@ -299,20 +299,21 @@ app.get('/api/wishlist', async (req, res) => {
 app.post('/api/removeFromWishlist', async (req, res) => {
   const { userId, tvShowId } = req.body;
 
+  console.log("API wishlist called");
+  console.log(userId);
+  console.log(tvShowId);
+
   try {
     await client.connect();
     const db = client.db('BananaBinge');
-    
+
     // Access the wish list collection
     const wishListCollection = db.collection('wishLists');
-    
-    // Convert the userId and tvShowId to ObjectId
-    const userIdObject = new ObjectId(userId);
-    const tvShowIdObject = new ObjectId(tvShowId);
 
     // Remove the TV show from the wish list
-    const result = await wishListCollection.deleteOne({ userId: userIdObject, tvShowId: tvShowIdObject });
+    const result = await wishListCollection.deleteOne({ UserId: userId, tvShowId: tvShowId });
 
+    console.log(result);
     client.close();
 
     if (result.deletedCount > 0) {
@@ -325,6 +326,7 @@ app.post('/api/removeFromWishlist', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 
 //Admin Panel

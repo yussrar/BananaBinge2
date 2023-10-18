@@ -29,6 +29,9 @@ function UserWishList()  {
         const response = await axios.get(`http://localhost:3000/api/wishlist?userId=${user._id}`);
         const data = response.data;
         setWishlistData(data);
+        console.log("Feticking wish list working");
+        console.log("data in watchlist js");
+        console.log(data);
       } catch (error) {
         console.error('Error fetching wish list data:', error);
       }

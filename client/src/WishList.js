@@ -26,7 +26,7 @@ function UserWishList()  {
   useEffect(() => {
     async function fetchWishlist() {
       try {
-        const response = await axios.get(`http://localhost:3000/api/wishlist?userId=${user._id}`);
+        const response = await axios.get(`https://banana-binge2.vercel.app/api/wishlist?userId=${user._id}`);
         const data = response.data;
         setWishlistData(data);
         console.log("Feticking wish list working");
@@ -49,7 +49,7 @@ function UserWishList()  {
             tvShowId: item.tvShowId,
             tvShowName: item.tvShowName,
           };
-          const response = await axios.post(`http://localhost:3000/api/showDetails`, data);
+          const response = await axios.post(`https://banana-binge2.vercel.app/api/showDetails`, data);
           console.log(response.data.movieDB.name);
           return response.data;
           
@@ -78,7 +78,7 @@ function UserWishList()  {
       console.log(user._id);
       console.log(tvShowId)
       // Send a request to the server to remove the TV show from the wish list
-      const response = await axios.post('http://localhost:3000/api/removeFromWishlist', {
+      const response = await axios.post('https://banana-binge2.vercel.app/api/removeFromWishlist', {
         userId: user._id,
         tvShowId: tvShowId,
       });

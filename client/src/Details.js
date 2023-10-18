@@ -1,13 +1,80 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './Details.css';
+import axios from 'axios'; // Import Axios for making API requests
+import { useUser } from './UserProvider';
+import { useNavigate } from 'react-router-dom';
+
 
 function Details() {
   const location = useLocation();
   const showDetails = location.state.showDetails;
 
+  const navigate = useNavigate();
+  const { user } = useUser();
+
+  const [userWishList, setUserWishList] = useState([]);
+
+  const isAlreadyAdded = (tvShowId) => {
+    return userWishList.some((item) => item.tvShowId === tvShowId);
+  };
+
+  //fetch user wishlist
+  useEffect(() => {
+    async function fetchUserWishList() {
+      try {
+        const response = await axios.get(`https://banana-binge2.vercel.app/api/wishlist?userId=${user._id}`);
+        const data = response.data;
+        setUserWishList(data);
+      } catch (error) {
+        console.error('Error fetching wish list data:', error);
+      }
+    }
+
+    fetchUserWishList();
+  }, [user]);
+
+  const handleAddToWishlist = async () => {
+    try {
+      if (!user) {
+        // No user is logged in, navigate to the login page
+        navigate('/Login'); // Adjust the login route as needed
+        return;
+      }
+
+      if (isAlreadyAdded(showDetails.movieDB.id)) {
+        
+        return;
+      }
+
+      // Create a data object to send in the request body
+      const data = {
+        tvShowId: showDetails.movieDB.id,
+        UserId: user._id,
+      };
+
+      const response = await axios.post('https://banana-binge2.vercel.app/api/addToWishlist', data);
+      const responseData = response.data;
+      setUserWishList([...userWishList, { tvShowId: showDetails.movieDB.id }]);
+      console.log(responseData.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
   return (
     <div>
+
+      <div>
+        <button
+          className="det-button"
+          onClick={handleAddToWishlist}
+        >
+          {isAlreadyAdded(showDetails.movieDB.id) ? 'Added to Your WatchList' : 'Add to WishList'}
+        </button>
+        {/* ... rest of your component */}
+      </div>
       <h1>Details</h1>
       <div className="main">
         <div className="detailsbox">
@@ -65,7 +132,7 @@ function Details() {
               <iframe
                 key={index}
                 className="frame"
-                title={`Video ${index + 1}`} 
+                title={`Video ${index + 1}`}
                 src={`https://www.youtube.com/embed/${video.id.videoId}`}
                 frameBorder="0"
                 allowFullScreen
